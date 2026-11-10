@@ -58,7 +58,13 @@ const routeTree = rootRoute.addChildren([
 const router = createRouter({
   routeTree,
   defaultPreload: 'intent',
-  defaultViewTransition: true,
+  defaultViewTransition: {
+    types: ({ fromLocation, toLocation }) =>
+      fromLocation?.pathname.startsWith('/lesson/') &&
+      toLocation.pathname.startsWith('/lesson/')
+        ? false
+        : [],
+  },
 })
 declare module '@tanstack/react-router' {
   interface Register {

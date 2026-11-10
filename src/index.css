@@ -12,12 +12,12 @@
 :root[data-mantine-color-scheme='light'] {
   --primary: #7060e3;
   --accent-soft: #e9e5ff;
-  --background: #fafbff;
-  --surface: #ffffff;
-  --surface-alt: #f1efff;
+  --background: #efeff5;
+  --surface: #f8f7fb;
+  --surface-alt: #eae8f3;
   --text-primary: #20264c;
   --text-secondary: #626d8a;
-  --border: #e4e7f3;
+  --border: #dcdde9;
   --on-primary: #ffffff;
   --shadow-color: rgb(98 85 165 / 12%);
   --node-shadow: #5746bc;

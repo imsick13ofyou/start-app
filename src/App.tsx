@@ -405,7 +405,10 @@ export function Lesson() {
               <Button
                 onClick={() => {
                   setFinished(false)
-                  void navigate({ to: '/lesson/' + next.id })
+                  void navigate({
+                    to: '/lesson/' + next.id,
+                    viewTransition: false,
+                  })
                 }}
                 radius="xl"
               >
