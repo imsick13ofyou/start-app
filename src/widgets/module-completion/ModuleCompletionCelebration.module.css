@@ -1,15 +1,141 @@
-.screen{min-height:70vh;display:grid;place-items:center;padding:40px 20px;overflow:hidden;background:radial-gradient(ellipse at center,var(--accent-soft),transparent 70%);animation:appear 300ms ease both}
-.panel{width:min(100%,520px);padding:42px 28px;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:28px;box-shadow:0 20px 60px var(--shadow-color);animation:panel-in 450ms cubic-bezier(.2,.8,.2,1) both}
-.art{height:185px;display:grid;place-items:center;position:relative;isolation:isolate}
-.trophy{width:132px;height:132px;position:relative;z-index:1;filter:drop-shadow(0 9px 18px rgb(230 164 40 / 35%));animation:trophy-in 1.25s cubic-bezier(.22,1.35,.4,1) both}
-.trophy svg{width:100%;height:100%}
-.star{position:absolute;left:50%;top:50%;color:#E6A82D;font-size:var(--size);opacity:0;animation:star-fly 1.6s ease-out var(--delay) both}
-.badge{display:inline-block;border-radius:999px;padding:8px 14px;background:var(--accent-soft);color:var(--primary);font-size:11px;font-weight:800;letter-spacing:.08em}
-.panel h1{font-size:clamp(28px,5vw,38px);letter-spacing:-1px;margin:18px 0 8px;color:var(--text-primary)}
-.moduleName{font-weight:800;color:var(--primary);margin:0}
-.message{max-width:360px;margin:18px auto 26px;color:var(--text-secondary);line-height:1.7}
-@keyframes appear{from{opacity:0}to{opacity:1}}
-@keyframes panel-in{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes trophy-in{0%{opacity:0;transform:translateY(30px) scale(.45) rotate(-12deg)}55%{opacity:1;transform:translateY(-12px) scale(1.1) rotate(4deg)}75%{transform:translateY(3px) scale(.97)}100%{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes star-fly{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}20%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y) - 25px)) scale(.65) rotate(65deg)}}
-@media(prefers-reduced-motion:reduce){.screen,.panel,.trophy,.star{animation:none}.star{display:none}}
+.screen {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+  padding: 40px 20px;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse at center,
+    var(--accent-soft),
+    transparent 70%
+  );
+  animation: appear 300ms ease both;
+}
+.panel {
+  width: min(100%, 520px);
+  padding: 42px 28px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  box-shadow: 0 20px 60px var(--shadow-color);
+  animation: panel-in 450ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.art {
+  height: 185px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  isolation: isolate;
+}
+.trophy {
+  width: 132px;
+  height: 132px;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 9px 18px rgb(230 164 40 / 35%));
+  animation: trophy-in 1.25s cubic-bezier(0.22, 1.35, 0.4, 1) both;
+}
+.trophy svg {
+  width: 100%;
+  height: 100%;
+}
+.star {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  color: #e6a82d;
+  font-size: var(--size);
+  opacity: 0;
+  animation: star-fly 1.6s ease-out var(--delay) both;
+}
+.badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: var(--accent-soft);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.panel h1 {
+  font-size: clamp(28px, 5vw, 38px);
+  letter-spacing: -1px;
+  margin: 18px 0 8px;
+  color: var(--text-primary);
+}
+.moduleName {
+  font-weight: 800;
+  color: var(--primary);
+  margin: 0;
+}
+.message {
+  max-width: 360px;
+  margin: 18px auto 26px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes trophy-in {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.45) rotate(-12deg);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(-12px) scale(1.1) rotate(4deg);
+  }
+  75% {
+    transform: translateY(3px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes star-fly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  20% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y) - 25px))
+      scale(0.65) rotate(65deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .screen,
+  .panel,
+  .trophy,
+  .star {
+    animation: none;
+  }
+  .star {
+    display: none;
+  }
+}

@@ -22,17 +22,40 @@ export default defineConfig([
       'local-jsdoc': {
         rules: {
           'public-api': {
-            meta: { type: 'problem', messages: { missing: 'Добавьте JSDoc для публичного API.' }, schema: [] },
+            meta: {
+              type: 'problem',
+              messages: { missing: 'Добавьте JSDoc для публичного API.' },
+              schema: [],
+            },
             create(context) {
-              const hasDoc = (node) => context.sourceCode.getCommentsBefore(node).some((comment) => comment.type === 'Block' && comment.value.startsWith('*'))
+              const hasDoc = (node) =>
+                context.sourceCode
+                  .getCommentsBefore(node)
+                  .some(
+                    (comment) =>
+                      comment.type === 'Block' && comment.value.startsWith('*'),
+                  )
               return {
                 ExportNamedDeclaration(node) {
                   const declaration = node.declaration
-                  if (!declaration || !['FunctionDeclaration', 'ClassDeclaration'].includes(declaration.type)) return
-                  if (!hasDoc(node)) context.report({ node, messageId: 'missing' })
+                  if (
+                    !declaration ||
+                    !['FunctionDeclaration', 'ClassDeclaration'].includes(
+                      declaration.type,
+                    )
+                  )
+                    return
+                  if (!hasDoc(node))
+                    context.report({ node, messageId: 'missing' })
                   if (declaration.type === 'ClassDeclaration') {
                     for (const member of declaration.body.body) {
-                      if (member.type === 'MethodDefinition' && member.accessibility !== 'private' && member.kind !== 'constructor' && !hasDoc(member)) context.report({ node: member, messageId: 'missing' })
+                      if (
+                        member.type === 'MethodDefinition' &&
+                        member.accessibility !== 'private' &&
+                        member.kind !== 'constructor' &&
+                        !hasDoc(member)
+                      )
+                        context.report({ node: member, messageId: 'missing' })
                     }
                   }
                 },
