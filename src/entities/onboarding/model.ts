@@ -29,3 +29,10 @@ export function normalizeProgress(input: unknown, blocks: OnboardingBlock[]): Pr
 export function isAvailable(id: string, progress: ProgressSnapshot, blocks: OnboardingBlock[]): boolean { const all = orderedPoints(blocks); const index = all.findIndex(p => p.id === id); return index >= 0 && (progress.points[id]?.status !== 'not_started' || all.slice(0,index).every(p => progress.points[p.id]?.status === 'completed')) }
 /** Обновляет точку и синхронизирует производные показатели. */
 export function updatePoint(progress: ProgressSnapshot, blocks: OnboardingBlock[], id: string, update: Partial<PointProgress>): ProgressSnapshot { if (!progress.points[id] || !isAvailable(id, progress, blocks)) return progress; return normalizeProgress({ ...progress, points: { ...progress.points, [id]: { ...progress.points[id], ...update } }, currentPointId: id, updatedAt: new Date().toISOString() }, blocks) }
+/** Проверяет, завершит ли точка свой блок впервые при текущем состоянии. */
+export function completesBlock(progress: ProgressSnapshot, blocks: OnboardingBlock[], id: string): boolean {
+  const block = blocks.find(item => item.points.some(point => point.id === id))
+  if (!block || progress.blocks[block.id] !== 'in_progress' || progress.points[id]?.status !== 'in_progress' || !isAvailable(id, progress, blocks)) return false
+  const last = [...block.points].sort((a, b) => a.order - b.order).at(-1)
+  return last?.id === id && block.points.every(point => point.id === id || progress.points[point.id]?.status === 'completed')
+}

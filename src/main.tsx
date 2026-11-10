@@ -15,7 +15,7 @@ const routeTree=rootRoute.addChildren([
  createRoute({getParentRoute:()=>rootRoute,path:'/completion',component:Completion}),
  createRoute({getParentRoute:()=>rootRoute,path:'/reference',component:Reference}),
 ])
-const router=createRouter({routeTree,defaultPreload:'intent'})
+const router=createRouter({routeTree,defaultPreload:'intent',defaultViewTransition:true})
 declare module '@tanstack/react-router' { interface Register { router: typeof router } }
 const theme=createTheme({fontFamily:'Inter, Segoe UI, sans-serif',defaultRadius:'md',variantColorResolver:(input)=>{const colors=defaultVariantColorsResolver(input);return input.variant==='filled'?{...colors,color:'var(--on-primary)'}:colors}})
 createRoot(document.getElementById('root')!).render(<StrictMode><MantineProvider theme={theme} defaultColorScheme="light"><ProgressProvider><RouterProvider router={router}/></ProgressProvider></MantineProvider></StrictMode>)

@@ -12,3 +12,23 @@
 .blockHeader.life{background:var(--section-life)}
 .blockIcon{background:rgb(255 255 255 / 20%)}
 .blockCount{border-color:rgb(0 0 0 / 45%)}
+.nodeConnector{--connector-color:color-mix(in srgb,var(--border) 65%,var(--text-secondary));pointer-events:none;background:radial-gradient(circle,var(--connector-color) 1.5px,transparent 1.5px) center top / 3px 9px repeat-y}
+.routeContent{view-transition-name:route-content}
+.sideLink{display:flex;align-items:center;justify-content:center;min-height:36px;padding:0 16px;border-radius:999px;background:var(--primary);color:var(--on-primary);font-weight:600;font-size:14px;text-decoration:none;transition:filter 180ms ease}
+.sideLink:hover{filter:brightness(.92)}
+.roadmapComplete{margin:-18px 0 28px}
+.block{scroll-margin-top:24px}
+.blockProgress{height:4px;margin:0 24px;background:var(--border);overflow:hidden;border-radius:999px}
+.blockProgress span{display:block;height:100%;background:var(--completed);border-radius:inherit;transition:width 350ms ease}
+.block:target .blockHeader{animation:block-highlight 1.5s ease-out both}
+.block:target .blockProgress span{animation:progress-complete 850ms cubic-bezier(.2,.8,.2,1) 150ms both}
+.block:target + .block .blockHeader{animation:block-unlock 700ms ease-out 450ms both}
+.node{transition:transform 180ms ease,background-color 220ms ease,box-shadow 220ms ease,color 220ms ease}
+a.node:hover{transform:translateY(-3px)}
+a.node:active{transform:translateY(2px) scale(.94)}
+.nodeDone{animation:check-in 350ms cubic-bezier(.2,1.4,.4,1) both}
+@keyframes block-highlight{0%,100%{box-shadow:0 0 0 0 transparent}35%{box-shadow:0 0 0 7px var(--accent-soft),0 12px 30px var(--shadow-color)}}
+@keyframes block-unlock{from{opacity:.55;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes progress-complete{from{width:66.666%}to{width:100%}}
+@keyframes check-in{from{transform:scale(.78)}to{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.block:target .blockHeader,.block:target .blockProgress span,.block:target + .block .blockHeader,.nodeDone{animation:none}.node,.blockProgress span{transition:none}}
