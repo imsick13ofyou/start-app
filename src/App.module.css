@@ -3,6 +3,11 @@
   border-bottom: 1px solid var(--border);
   view-transition-name: app-header;
 }
+.inlineIcon {
+  display: inline-block;
+  vertical-align: -0.2em;
+  flex: none;
+}
 .headerInner {
   max-width: 1200px;
   margin: auto;
@@ -250,6 +255,8 @@
   display: grid;
   place-items: center;
   box-shadow: 0 12px 35px var(--shadow-color);
+
+ 
 }
 .floatStar {
   right: 5%;
@@ -275,7 +282,7 @@
   transform: rotate(12deg);
 }
 .floatBadge small {
-  font-size: 10px;
+  font-size: 14px;
   text-align: center;
   line-height: 1.1;
 }
@@ -640,7 +647,7 @@
 }
 .celebrate {
   font-size: 60px;
-  color: var(--primary);
+  color: #f3b940;
   animation: pop 0.6s ease both;
 }
 @keyframes pop {

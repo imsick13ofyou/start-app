@@ -44,7 +44,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  color: #e6a82d;
+  color: #f3b940;
   font-size: var(--size);
   opacity: 0;
   animation: star-fly 1.6s ease-out var(--delay) both;
@@ -58,6 +58,11 @@
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.08em;
+}
+.badge svg,
+.inlineIcon {
+  display: inline-block;
+  vertical-align: -0.2em;
 }
 .panel h1 {
   font-size: clamp(28px, 5vw, 38px);

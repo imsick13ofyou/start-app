@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import { Button, Modal } from '@mantine/core'
+import { IconStarFilled } from '@tabler/icons-react'
 import styles from './ProgramCompletionModal.module.css'
 
 const trophies = [0, 1, 2]
@@ -57,7 +58,7 @@ export function ProgramCompletionModal({
               } as CSSProperties
             }
           >
-            ✦
+            <IconStarFilled size={star.size} aria-hidden="true" />
           </span>
         ))}
         <div className={styles.trophies}>

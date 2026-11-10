@@ -51,7 +51,7 @@
   position: absolute;
   left: 50%;
   top: 65%;
-  color: #e6a82d;
+  color: #f3b940;
   font-size: var(--size);
   opacity: 0;
   animation: star-fly 1.7s ease-out var(--delay) both;

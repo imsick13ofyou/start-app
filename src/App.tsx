@@ -10,6 +10,25 @@ import {
   useMantineColorScheme,
 } from '@mantine/core'
 import { Link, Outlet, useNavigate, useParams } from '@tanstack/react-router'
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconArrowUpRight,
+  IconBook,
+  IconBuilding,
+  IconBulb,
+  IconCheck,
+  IconFileText,
+  IconHeart,
+  IconLock,
+  IconMoon,
+  IconRocket,
+  IconSchool,
+  IconSparkles,
+  IconSun,
+  IconTrophy,
+  IconUsers,
+} from '@tabler/icons-react'
 import { blocks } from './entities/onboarding/content'
 import {
   completesBlock,
@@ -22,6 +41,13 @@ import { ProgramCompletionModal } from './widgets/program-completion/ProgramComp
 import { useProgress } from './app/progress'
 import styles from './App.module.css'
 const points = orderedPoints(blocks)
+const blockIcons: Record<string, typeof IconSchool> = {
+  start: IconRocket,
+  study: IconBook,
+  documents: IconFileText,
+  campus: IconBuilding,
+  life: IconUsers,
+}
 const labels = {
   not_started: 'Не начато',
   in_progress: 'В процессе',
@@ -48,7 +74,11 @@ function ThemeToggle() {
       aria-label={dark ? 'Включить светлую тему' : 'Включить тёмную тему'}
       title={dark ? 'Включить светлую тему' : 'Включить тёмную тему'}
     >
-      {dark ? '☀' : '☾'}
+      {dark ? (
+        <IconSun size={20} aria-hidden="true" />
+      ) : (
+        <IconMoon size={20} aria-hidden="true" />
+      )}
     </ActionIcon>
   )
 }
@@ -61,7 +91,9 @@ export function Layout() {
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <Link to="/" className={styles.brand}>
-            <span className={styles.brandMark}>✳</span>
+            <span className={styles.brandMark}>
+              <IconSchool size={26} aria-hidden="true" />
+            </span>
             <span>
               старт <span className={styles.brandAccent}>в вузе</span>
               <small>твой гид по университету</small>
@@ -115,7 +147,14 @@ export function Welcome() {
   return (
     <main className={styles.welcome}>
       <div className={styles.welcomeCopy}>
-        <span className={styles.eyebrow}>✦ ТВОЙ ПЕРВЫЙ ШАГ В МИСИС</span>
+        <span className={styles.eyebrow}>
+          <IconSparkles
+            className={styles.inlineIcon}
+            size={16}
+            aria-hidden="true"
+          />{' '}
+          ТВОЙ ПЕРВЫЙ ШАГ В МИСИС
+        </span>
         <h1>
           В университете
           <br />
@@ -127,12 +166,19 @@ export function Welcome() {
         </p>
         <div className={styles.welcomeActions}>
           <Button component={Link} to="/roadmap" size="lg" radius="xl">
-            {started ? 'Продолжить маршрут' : 'Начать знакомство'} &nbsp; →
+            {started ? 'Продолжить маршрут' : 'Начать знакомство'}{' '}
+            <IconArrowRight
+              className={styles.inlineIcon}
+              size={18}
+              aria-hidden="true"
+            />
           </Button>
           <span>15 тем · в своём темпе</span>
         </div>
         <div className={styles.welcomeNote}>
-          <span>✳</span>
+          <span>
+            <IconBulb size={27} aria-hidden="true" />
+          </span>
           <p>
             <strong>Не нужно запоминать всё сразу.</strong>
             <br />
@@ -145,12 +191,21 @@ export function Welcome() {
         <div className={styles.orbitTwo} />
         <div className={styles.heroCard}>
           <div className={styles.heroCardTop}>
-            ТВОЙ МАРШРУТ <span>✦</span>
+            ТВОЙ МАРШРУТ{' '}
+            <span>
+              <IconSparkles size={22} aria-hidden="true" />
+            </span>
           </div>
           <div className={styles.heroDots}>
-            <i>✓</i>
-            <i>✦</i>
-            <i>♡</i>
+            <i>
+              <IconCheck size={26} aria-hidden="true" />
+            </i>
+            <i>
+              <IconSparkles size={26} aria-hidden="true" />
+            </i>
+            <i>
+              <IconHeart size={26} aria-hidden="true" />
+            </i>
           </div>
           <strong>
             Всё начинается
@@ -159,9 +214,11 @@ export function Welcome() {
           <small>{done} из 15 тем пройдено</small>
           <Bar value={(done / 15) * 100} label="Прогресс" />
         </div>
-        <div className={styles.floatStar}>✳</div>
+        <div className={styles.floatStar}>
+          <IconSparkles size={42} aria-hidden="true" />
+        </div>
         <div className={styles.floatBadge}>
-          ✦<br />
+          <IconSparkles size={26} aria-hidden="true" />
           <small>
             новый
             <br />
@@ -207,13 +264,19 @@ export function Roadmap() {
       {done === points.length && (
         <div className={styles.roadmapComplete}>
           <Button component={Link} to="/completion" radius="xl">
-            Посмотреть итоги маршрута →
+            Посмотреть итоги маршрута{' '}
+            <IconArrowRight
+              className={styles.inlineIcon}
+              size={18}
+              aria-hidden="true"
+            />
           </Button>
         </div>
       )}
       <div className={styles.roadmapLayout}>
         <div className={styles.path}>
           {blocks.map((block, bi) => {
+            const BlockIcon = blockIcons[block.icon] ?? IconSchool
             const completed = block.points.filter(
               (p) => progress.points[p.id].status === 'completed',
             ).length
@@ -224,7 +287,9 @@ export function Roadmap() {
                 className={styles.block}
               >
                 <div className={`${styles.blockHeader} ${styles[block.theme]}`}>
-                  <div className={styles.blockIcon}>{block.icon}</div>
+                  <div className={styles.blockIcon}>
+                    <BlockIcon size={28} aria-hidden="true" />
+                  </div>
                   <div>
                     <span>
                       РАЗДЕЛ 0{bi + 1} · {completed} / {block.points.length}
@@ -236,7 +301,11 @@ export function Roadmap() {
                     className={styles.blockCount}
                     aria-label={`Пройдено ${completed} из ${block.points.length} тем`}
                   >
-                    {completed === 3 ? '✓' : `${completed}/3`}
+                    {completed === 3 ? (
+                      <IconCheck size={22} aria-hidden="true" />
+                    ) : (
+                      `${completed}/3`
+                    )}
                   </div>
                 </div>
                 <div className={styles.blockProgress} aria-hidden="true">
@@ -263,14 +332,18 @@ export function Roadmap() {
                             className={`${styles.node} ${status === 'completed' ? styles.nodeDone : status === 'in_progress' ? styles.nodeInProgress : styles.nodeActive}`}
                             aria-label={`${point.title}: ${labels[status]}`}
                           >
-                            {status === 'completed' ? '✓' : i + 1}
+                            {status === 'completed' ? (
+                              <IconCheck size={24} aria-hidden="true" />
+                            ) : (
+                              i + 1
+                            )}
                           </Link>
                         ) : (
                           <span
                             className={`${styles.node} ${styles.nodeLocked}`}
                             aria-label={`${point.title}: недоступно`}
                           >
-                            ?
+                            <IconLock size={22} aria-hidden="true" />
                           </span>
                         )}
                         <div className={styles.nodeText}>
@@ -296,7 +369,9 @@ export function Roadmap() {
         </div>
         <aside className={styles.sidebar}>
           <div className={styles.sideCard}>
-            <div className={styles.sideIcon}>✦</div>
+            <div className={styles.sideIcon}>
+              <IconSparkles size={25} aria-hidden="true" />
+            </div>
             <h3>Всё получится!</h3>
             <p>
               Двигайся постепенно — каждая открытая тема останется в
@@ -308,16 +383,33 @@ export function Roadmap() {
                 params={{ pointId: current.id }}
                 className={styles.sideLink}
               >
-                Продолжить →
+                Продолжить{' '}
+                <IconArrowRight
+                  className={styles.inlineIcon}
+                  size={18}
+                  aria-hidden="true"
+                />
               </Link>
             ) : (
               <Button component={Link} to="/completion" fullWidth radius="xl">
-                Итоги маршрута →
+                Итоги маршрута{' '}
+                <IconArrowRight
+                  className={styles.inlineIcon}
+                  size={18}
+                  aria-hidden="true"
+                />
               </Button>
             )}
           </div>
           <div className={styles.sideHint}>
-            <strong>✳ &nbsp;Полезно знать</strong>
+            <strong>
+              <IconBulb
+                className={styles.inlineIcon}
+                size={17}
+                aria-hidden="true"
+              />{' '}
+              Полезно знать
+            </strong>
             <p>
               Ссылки ведут на официальный сайт университета. Проверяй там
               актуальные условия.
@@ -372,6 +464,7 @@ export function Lesson() {
       </main>
     )
   const block = blocks.find((b) => b.id === point.blockId)!
+  const BlockIcon = blockIcons[block.icon] ?? IconSchool
   const index = saved.cardIndex
   const card = point.cards[index]
   const pointIndex = points.indexOf(point)
@@ -393,7 +486,9 @@ export function Lesson() {
     return (
       <>
         <main className={styles.empty}>
-          <div className={styles.celebrate}>✦</div>
+          <div className={styles.celebrate}>
+            <IconSparkles size={60} aria-hidden="true" />
+          </div>
           <span className={styles.eyebrow}>ЕЩЁ ОДИН ШАГ</span>
           <h1>Тема пройдена!</h1>
           <p>Ты всегда можешь вернуться к ней в справочнике.</p>
@@ -412,11 +507,21 @@ export function Lesson() {
                 }}
                 radius="xl"
               >
-                Следующая тема →
+                Следующая тема{' '}
+                <IconArrowRight
+                  className={styles.inlineIcon}
+                  size={18}
+                  aria-hidden="true"
+                />
               </Button>
             ) : (
               <Button component={Link} to="/completion" radius="xl">
-                Завершить маршрут →
+                Завершить маршрут{' '}
+                <IconArrowRight
+                  className={styles.inlineIcon}
+                  size={18}
+                  aria-hidden="true"
+                />
               </Button>
             )}
           </div>
@@ -438,7 +543,12 @@ export function Lesson() {
   return (
     <main className={styles.lesson}>
       <Link to="/roadmap" className={styles.back}>
-        ← &nbsp; К маршруту
+        <IconArrowLeft
+          className={styles.inlineIcon}
+          size={17}
+          aria-hidden="true"
+        />{' '}
+        К маршруту
       </Link>
       <div className={styles.lessonTop}>
         <span>
@@ -453,7 +563,9 @@ export function Lesson() {
         label={`Карточка ${index + 1} из ${point.cards.length}`}
       />
       <div className={styles.lessonTitle}>
-        <span className={styles.lessonIcon}>{block.icon}</span>
+        <span className={styles.lessonIcon}>
+          <BlockIcon size={30} aria-hidden="true" />
+        </span>
         <div>
           <span className={styles.eyebrow}>
             {saved.status === 'completed' ? 'ПОВТОРЕНИЕ ТЕМЫ' : 'ЗНАКОМИМСЯ'}
@@ -498,7 +610,9 @@ export function Lesson() {
           </>
         )}
         <div className={styles.source}>
-          <span>↗</span>
+          <span>
+            <IconArrowUpRight size={22} aria-hidden="true" />
+          </span>
           <div>
             <strong>Проверь на официальном сайте</strong>
             <p>Актуальные подробности и условия — у университета.</p>
@@ -509,7 +623,12 @@ export function Lesson() {
                 target="_blank"
                 rel="noreferrer"
               >
-                {source.title} ↗
+                {source.title}{' '}
+                <IconArrowUpRight
+                  className={styles.inlineIcon}
+                  size={16}
+                  aria-hidden="true"
+                />
               </a>
             ))}
           </div>
@@ -522,11 +641,21 @@ export function Lesson() {
           disabled={index === 0}
           onClick={() => move(index - 1)}
         >
-          ← Назад
+          <IconArrowLeft
+            className={styles.inlineIcon}
+            size={18}
+            aria-hidden="true"
+          />{' '}
+          Назад
         </Button>
         {index < point.cards.length - 1 ? (
           <Button radius="xl" size="md" onClick={() => move(index + 1)}>
-            Продолжить →
+            Продолжить{' '}
+            <IconArrowRight
+              className={styles.inlineIcon}
+              size={18}
+              aria-hidden="true"
+            />
           </Button>
         ) : (
           <Button
@@ -560,7 +689,12 @@ export function Lesson() {
               else finish()
             }}
           >
-            Завершить тему ✓
+            Завершить тему{' '}
+            <IconCheck
+              className={styles.inlineIcon}
+              size={18}
+              aria-hidden="true"
+            />
           </Button>
         )}
       </div>
@@ -583,7 +717,9 @@ export function Completion() {
     )
   return (
     <main className={styles.empty}>
-      <div className={styles.celebrate}>✳</div>
+      <div className={styles.celebrate}>
+        <IconTrophy size={60} aria-hidden="true" />
+      </div>
       <span className={styles.eyebrow}>МАРШРУТ ЗАВЕРШЁН · 100%</span>
       <h1>Поздравляем!</h1>
       <p>
@@ -599,7 +735,12 @@ export function Completion() {
           Посмотреть маршрут
         </Button>
         <Button component={Link} to="/reference" radius="xl">
-          Открыть справочник →
+          Открыть справочник{' '}
+          <IconArrowRight
+            className={styles.inlineIcon}
+            size={18}
+            aria-hidden="true"
+          />
         </Button>
       </div>
     </main>
@@ -626,19 +767,32 @@ export function Reference() {
         </div>
       ) : (
         blocks.map((block) => {
+          const BlockIcon = blockIcons[block.icon] ?? IconSchool
           const items = block.points.filter(
             (p) => progress.points[p.id].status !== 'not_started',
           )
           return items.length ? (
             <section key={block.id} className={styles.refSection}>
               <h2>
-                <span>{block.icon}</span> {block.title}
+                <span>
+                  <BlockIcon
+                    className={styles.inlineIcon}
+                    size={22}
+                    aria-hidden="true"
+                  />
+                </span>{' '}
+                {block.title}
               </h2>
               {items.map((point) => (
                 <div className={styles.refItem} key={point.id}>
                   <div>
                     <Link to="/lesson/$pointId" params={{ pointId: point.id }}>
-                      {point.title} →
+                      {point.title}{' '}
+                      <IconArrowRight
+                        className={styles.inlineIcon}
+                        size={16}
+                        aria-hidden="true"
+                      />
                     </Link>
                     <p>
                       {point.description} ·{' '}
@@ -651,7 +805,12 @@ export function Reference() {
                     rel="noreferrer"
                     aria-label={`Официальный источник: ${point.title}`}
                   >
-                    Источник ↗
+                    Источник{' '}
+                    <IconArrowUpRight
+                      className={styles.inlineIcon}
+                      size={16}
+                      aria-hidden="true"
+                    />
                   </a>
                 </div>
               ))}
