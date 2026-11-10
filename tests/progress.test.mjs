@@ -7,6 +7,7 @@ import {
   orderedPoints,
   isAvailable,
   updatePoint,
+  completesProgram,
 } from '../src/entities/onboarding/model.ts'
 import { LocalStorageProgressRepository } from '../src/shared/api/progressRepository.ts'
 
@@ -125,4 +126,29 @@ test('хранилище восстанавливает прогресс, обр
   await repository.saveProgress(saved)
   await repository.resetProgress()
   assert.equal(data.size, 0)
+})
+test('поздравление только при первом завершении последней темы всей программы', () => {
+  let progress = initial()
+  for (const point of points.slice(0, -1)) {
+    progress = updatePoint(progress, blocks, point.id, {
+      status: 'in_progress',
+    })
+    assert.equal(completesProgram(progress, blocks, point.id), false)
+    progress = complete(progress, point.id)
+  }
+  const last = points.at(-1)
+  assert.equal(completesProgram(progress, blocks, last.id), false)
+  progress = updatePoint(progress, blocks, last.id, { status: 'in_progress' })
+  assert.equal(completesProgram(progress, blocks, last.id), true)
+  progress = complete(progress, last.id)
+  assert.equal(completesProgram(progress, blocks, last.id), false)
+  const restored = normalizeProgress(
+    JSON.parse(JSON.stringify(progress)),
+    blocks,
+  )
+  assert.equal(completesProgram(restored, blocks, last.id), false)
+  assert.equal(
+    Object.values(restored.blocks).every((status) => status === 'completed'),
+    true,
+  )
 })

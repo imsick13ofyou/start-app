@@ -13,10 +13,12 @@ import { Link, Outlet, useNavigate, useParams } from '@tanstack/react-router'
 import { blocks } from './entities/onboarding/content'
 import {
   completesBlock,
+  completesProgram,
   isAvailable,
   orderedPoints,
 } from './entities/onboarding/model'
 import { ModuleCompletionCelebration } from './widgets/module-completion/ModuleCompletionCelebration'
+import { ProgramCompletionModal } from './widgets/program-completion/ProgramCompletionModal'
 import { useProgress } from './app/progress'
 import styles from './App.module.css'
 const points = orderedPoints(blocks)
@@ -350,6 +352,7 @@ export function Lesson() {
   const [choice, setChoice] = useState<string | null>(null)
   const [finished, setFinished] = useState(false)
   const [moduleFinished, setModuleFinished] = useState(false)
+  const [programFinished, setProgramFinished] = useState(false)
   useEffect(() => {
     if (point && available && saved?.status === 'not_started')
       update(point.id, { status: 'in_progress' })
@@ -388,32 +391,46 @@ export function Lesson() {
     )
   if (finished)
     return (
-      <main className={styles.empty}>
-        <div className={styles.celebrate}>✦</div>
-        <span className={styles.eyebrow}>ЕЩЁ ОДИН ШАГ</span>
-        <h1>Тема пройдена!</h1>
-        <p>Ты всегда можешь вернуться к ней в справочнике.</p>
-        <div className={styles.actions}>
-          <Button component={Link} to="/roadmap" variant="light" radius="xl">
-            К маршруту
-          </Button>
-          {next ? (
-            <Button
-              onClick={() => {
-                setFinished(false)
-                void navigate({ to: '/lesson/' + next.id })
-              }}
-              radius="xl"
-            >
-              Следующая тема →
+      <>
+        <main className={styles.empty}>
+          <div className={styles.celebrate}>✦</div>
+          <span className={styles.eyebrow}>ЕЩЁ ОДИН ШАГ</span>
+          <h1>Тема пройдена!</h1>
+          <p>Ты всегда можешь вернуться к ней в справочнике.</p>
+          <div className={styles.actions}>
+            <Button component={Link} to="/roadmap" variant="light" radius="xl">
+              К маршруту
             </Button>
-          ) : (
-            <Button component={Link} to="/completion" radius="xl">
-              Завершить маршрут →
-            </Button>
-          )}
-        </div>
-      </main>
+            {next ? (
+              <Button
+                onClick={() => {
+                  setFinished(false)
+                  void navigate({ to: '/lesson/' + next.id })
+                }}
+                radius="xl"
+              >
+                Следующая тема →
+              </Button>
+            ) : (
+              <Button component={Link} to="/completion" radius="xl">
+                Завершить маршрут →
+              </Button>
+            )}
+          </div>
+        </main>
+        <ProgramCompletionModal
+          opened={programFinished}
+          onClose={() => setProgramFinished(false)}
+          onReference={() => {
+            setProgramFinished(false)
+            void navigate({ to: '/reference' })
+          }}
+          onRoadmap={() => {
+            setProgramFinished(false)
+            void navigate({ to: '/roadmap' })
+          }}
+        />
+      </>
     )
   return (
     <main className={styles.lesson}>
@@ -514,16 +531,25 @@ export function Lesson() {
             size="md"
             onClick={() => {
               const moduleComplete = completesBlock(progress, blocks, point.id)
+              const programComplete = completesProgram(
+                progress,
+                blocks,
+                point.id,
+              )
               const finish = () => {
                 update(point.id, {
                   status: 'completed',
                   completedAt: saved.completedAt ?? new Date().toISOString(),
                 })
-                if (moduleComplete) setModuleFinished(true)
+                if (programComplete) {
+                  setFinished(true)
+                  setProgramFinished(true)
+                } else if (moduleComplete) setModuleFinished(true)
                 else setFinished(true)
               }
               if (
                 moduleComplete &&
+                !programComplete &&
                 document.startViewTransition &&
                 !window.matchMedia('(prefers-reduced-motion: reduce)').matches
               )

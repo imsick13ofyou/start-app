@@ -182,3 +182,21 @@ export function completesBlock(
     )
   )
 }
+
+/** Определяет первое завершение последней темы всей программы. */
+export function completesProgram(
+  progress: ProgressSnapshot,
+  blocks: OnboardingBlock[],
+  id: string,
+): boolean {
+  const points = orderedPoints(blocks)
+  return (
+    points.at(-1)?.id === id &&
+    progress.points[id]?.status === 'in_progress' &&
+    isAvailable(id, progress, blocks) &&
+    points.every(
+      (point) =>
+        point.id === id || progress.points[point.id]?.status === 'completed',
+    )
+  )
+}
