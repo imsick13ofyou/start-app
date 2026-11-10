@@ -29,11 +29,11 @@ const topics: Topic[][] = [
   ],
 ]
 const sections = [
-  ['first','Первые шаги','Освойся и найди главные сервисы','✦','blue'],
-  ['study','Учебный процесс','Всё необходимое для учёбы','▤','violet'],
-  ['documents','Документы и выплаты','Важные вопросы без лишней суеты','▧','coral'],
-  ['campus','Кампус и сервисы','Пространства и возможности вокруг','⌂','teal'],
-  ['life','Поддержка и студенческая жизнь','Люди, помощь и новые интересы','♡','purple'],
+  ['first','Первые шаги','Освойся и найди главные сервисы','✦','start'],
+  ['study','Учебный процесс','Всё необходимое для учёбы','▤','study'],
+  ['documents','Документы и выплаты','Важные вопросы без лишней суеты','▧','documents'],
+  ['campus','Кампус и сервисы','Пространства и возможности вокруг','⌂','campus'],
+  ['life','Поддержка и студенческая жизнь','Люди, помощь и новые интересы','♡','life'],
 ]
 /** Упорядоченная программа: источники предоставлены в задании и требуют проверки. */
 export const blocks: OnboardingBlock[] = sections.map(([id,title,description,icon,theme], blockIndex) => ({ id,title,description,icon,theme,order:blockIndex,points:topics[blockIndex].map(([pointId,pointTitle,summary,what,action,url],order): OnboardingPoint => ({ id:pointId,blockId:id,title:pointTitle,description:summary,order,cards:[{type:'text',title:'Что это и зачем?',text:what},{type:'text',title:'Что сделать?',text:action},...(pointId === 'certificate' ? [{type:'choice' as const,title:'Где начать поиск справки?',options:['В личном кабинете','В расписании занятий','В библиотечном каталоге'],answer:0,explanation:'Порядок заказа и доступные справки уточняй на официальной странице.'}] : [])],sources:[{title:'Официальная информация НИТУ МИСИС',url,owner:'НИТУ МИСИС'}, ...(pointId === 'schedule' ? [{title:'Студентам НИТУ МИСИС',url:'https://misis.ru/students/',owner:'НИТУ МИСИС'}] : [])] })) }))

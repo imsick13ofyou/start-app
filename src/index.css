@@ -1,1 +1,80 @@
-:root{font-family:Inter,'Segoe UI',sans-serif;color:#20264c;background:#fafbff;font-synthesis:none}*{box-sizing:border-box}body{margin:0;min-width:320px}a{color:inherit}button,a{touch-action:manipulation}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #8873f9;outline-offset:3px}::selection{background:#d9d2ff}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+:root {
+  font-family: Inter, 'Segoe UI', sans-serif;
+  font-synthesis: none;
+  --brand: #6858DF;
+  --section-start: #6A65DD;
+  --section-study: #8B72DA;
+  --section-campus: #5BB8B2;
+  --section-documents: #E89886;
+  --section-life: #9871BD;
+  --section-text: #FFFFFF;
+}
+:root[data-mantine-color-scheme='light'] {
+  --primary: #7060E3;
+  --accent-soft: #E9E5FF;
+  --background: #FAFBFF;
+  --surface: #FFFFFF;
+  --surface-alt: #F1EFFF;
+  --text-primary: #20264C;
+  --text-secondary: #626D8A;
+  --border: #E4E7F3;
+  --on-primary: #FFFFFF;
+  --shadow-color: rgb(98 85 165 / 12%);
+  --node-shadow: #5746BC;
+  --completed: #6BC894;
+  --on-completed: #173A29;
+  --completed-shadow: #4CAA78;
+}
+:root[data-mantine-color-scheme='dark'] {
+  --primary: #B9ACFF;
+  --accent-soft: #39345F;
+  --background: #16172A;
+  --surface: #22243B;
+  --surface-alt: #30314D;
+  --text-primary: #F5F3FF;
+  --text-secondary: #C0C2D9;
+  --border: #494B69;
+  --on-primary: #16172A;
+  --shadow-color: rgb(0 0 0 / 25%);
+  --node-shadow: #7868D2;
+  --completed: #6BC894;
+  --on-completed: #173A29;
+  --completed-shadow: #4CAA78;
+}
+:root[data-mantine-color-scheme] {
+  color-scheme: light dark;
+  color: var(--text-primary);
+  background: var(--background);
+  --mantine-color-body: var(--background);
+  --mantine-color-text: var(--text-primary);
+  --mantine-color-dimmed: var(--text-secondary);
+  --mantine-color-default: var(--surface);
+  --mantine-color-default-hover: var(--surface-alt);
+  --mantine-color-default-color: var(--text-primary);
+  --mantine-color-default-border: var(--border);
+  --mantine-primary-color-filled: var(--primary);
+  --mantine-primary-color-filled-hover: color-mix(in srgb, var(--primary), var(--text-primary) 12%);
+  --mantine-primary-color-contrast: var(--on-primary);
+  --mantine-primary-color-light: var(--accent-soft);
+  --mantine-primary-color-light-hover: var(--surface-alt);
+  --mantine-primary-color-light-color: var(--primary);
+  --mantine-color-blue-filled: var(--primary);
+  --mantine-color-blue-filled-hover: var(--mantine-primary-color-filled-hover);
+  --mantine-color-blue-light: var(--accent-soft);
+  --mantine-color-blue-light-hover: var(--surface-alt);
+  --mantine-color-blue-light-color: var(--primary);
+}
+:root[data-mantine-color-scheme='light'] { color-scheme: light; }
+:root[data-mantine-color-scheme='dark'] { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; background: var(--background); color: var(--text-primary); }
+a { color: inherit; }
+button, a { touch-action: manipulation; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+::selection { background: var(--accent-soft); color: var(--text-primary); }
+.mantine-Button-root:disabled, .mantine-Button-root[data-disabled] { background: var(--surface-alt); color: var(--text-secondary); border-color: var(--border); opacity: 1; }
+.mantine-Button-root:not([data-variant]), .mantine-Button-root[data-variant='filled'] { --button-color: var(--on-primary); }
+.mantine-Progress-root { background: var(--surface-alt); }
+.mantine-Radio-radio { --radio-icon-color: var(--on-primary); }
+.mantine-Alert-root { --alert-bg: var(--accent-soft); --alert-color: var(--text-primary); --alert-bd: var(--border); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }

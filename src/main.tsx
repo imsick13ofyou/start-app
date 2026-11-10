@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { MantineProvider, createTheme } from '@mantine/core'
+import { MantineProvider, createTheme, defaultVariantColorsResolver } from '@mantine/core'
 import { createRootRoute, createRoute, createRouter, RouterProvider } from '@tanstack/react-router'
 import '@mantine/core/styles.css'
 import './index.css'
@@ -17,5 +17,5 @@ const routeTree=rootRoute.addChildren([
 ])
 const router=createRouter({routeTree,defaultPreload:'intent'})
 declare module '@tanstack/react-router' { interface Register { router: typeof router } }
-const theme=createTheme({primaryColor:'indigo',fontFamily:'Inter, Segoe UI, sans-serif',defaultRadius:'md'})
-createRoot(document.getElementById('root')!).render(<StrictMode><MantineProvider theme={theme}><ProgressProvider><RouterProvider router={router}/></ProgressProvider></MantineProvider></StrictMode>)
+const theme=createTheme({fontFamily:'Inter, Segoe UI, sans-serif',defaultRadius:'md',variantColorResolver:(input)=>{const colors=defaultVariantColorsResolver(input);return input.variant==='filled'?{...colors,color:'var(--on-primary)'}:colors}})
+createRoot(document.getElementById('root')!).render(<StrictMode><MantineProvider theme={theme} defaultColorScheme="light"><ProgressProvider><RouterProvider router={router}/></ProgressProvider></MantineProvider></StrictMode>)
