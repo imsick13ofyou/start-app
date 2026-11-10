@@ -9,53 +9,6 @@
 .body {
   padding: 0 28px 32px;
 }
-.art {
-  position: relative;
-  isolation: isolate;
-  height: 180px;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-.art::before {
-  content: '';
-  position: absolute;
-  width: min(85%, 300px);
-  height: 120px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, rgb(243 185 64 / 25%), transparent 70%);
-}
-.trophies {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-.trophy {
-  width: clamp(68px, 18vw, 110px);
-  flex: none;
-  filter: drop-shadow(0 8px 12px rgb(230 164 40 / 35%));
-  animation: trophy-in 1.2s cubic-bezier(0.22, 1.35, 0.4, 1) var(--delay) both;
-}
-.trophy:nth-child(2) {
-  width: clamp(90px, 23vw, 140px);
-  margin: 0 -10px;
-  z-index: 1;
-}
-.trophy svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.star {
-  position: absolute;
-  left: 50%;
-  top: 65%;
-  color: #f3b940;
-  font-size: var(--size);
-  opacity: 0;
-  animation: star-fly 1.7s ease-out var(--delay) both;
-}
 .message {
   text-align: center;
   animation: reveal 550ms ease-out 400ms both;
@@ -84,38 +37,6 @@
   flex-wrap: wrap;
   gap: 10px;
 }
-@keyframes trophy-in {
-  0% {
-    opacity: 0;
-    transform: translateY(28px) scale(0.45) rotate(-10deg);
-  }
-  55% {
-    opacity: 1;
-    transform: translateY(-12px) scale(1.1) rotate(4deg);
-  }
-  75% {
-    transform: translateY(3px) scale(0.97);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-@keyframes star-fly {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2);
-  }
-  20%,
-  65% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y) - 20px))
-      scale(0.65) rotate(70deg);
-  }
-}
 @keyframes reveal {
   from {
     opacity: 0;
@@ -130,19 +51,12 @@
   .body {
     padding: 0 18px 24px;
   }
-  .art {
-    height: 145px;
-  }
   .actions {
     flex-direction: column;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .trophy,
   .message {
     animation: none;
-  }
-  .star {
-    display: none;
   }
 }

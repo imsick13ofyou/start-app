@@ -8,8 +8,10 @@ import {
   isAvailable,
   updatePoint,
   completesProgram,
+  getCelebrationLevel,
 } from '../src/entities/onboarding/model.ts'
 import { LocalStorageProgressRepository } from '../src/shared/api/progressRepository.ts'
+import { celebrationConfig } from '../src/shared/ui/celebration/config.ts'
 
 const points = orderedPoints(blocks)
 const initial = () => normalizeProgress(emptyProgress(), blocks)
@@ -151,4 +153,35 @@ test('поздравление только при первом завершен
     Object.values(restored.blocks).every((status) => status === 'completed'),
     true,
   )
+})
+test('уровень награды соответствует первому завершению и приоритету', () => {
+  let progress = initial()
+  assert.equal(getCelebrationLevel(progress, blocks, points[1].id), null)
+  for (const [index, point] of points.entries()) {
+    progress = updatePoint(progress, blocks, point.id, {
+      status: 'in_progress',
+    })
+    const expected =
+      index === points.length - 1
+        ? 'onboarding'
+        : index % 3 === 2
+          ? 'block'
+          : 'topic'
+    assert.equal(getCelebrationLevel(progress, blocks, point.id), expected)
+    progress = complete(progress, point.id)
+    assert.equal(getCelebrationLevel(progress, blocks, point.id), null)
+  }
+  const restored = normalizeProgress(
+    JSON.parse(JSON.stringify(progress)),
+    blocks,
+  )
+  assert.equal(getCelebrationLevel(restored, blocks, points.at(-1).id), null)
+})
+test('число кубков и интенсивность звёзд растут с уровнем', () => {
+  assert.deepEqual(
+    Object.values(celebrationConfig).map((value) => value.trophies),
+    [1, 3, 5],
+  )
+  assert.ok(celebrationConfig.topic.stars < celebrationConfig.block.stars)
+  assert.ok(celebrationConfig.block.stars < celebrationConfig.onboarding.stars)
 })

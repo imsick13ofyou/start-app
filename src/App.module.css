@@ -194,6 +194,7 @@
   border-style: dashed;
 }
 .heroCard {
+  z-index: 1;
   position: relative;
   background: var(--surface);
   border-radius: 27px;
@@ -259,6 +260,7 @@
  
 }
 .floatStar {
+  z-index: 2;
   right: 5%;
   top: 13%;
   width: 75px;

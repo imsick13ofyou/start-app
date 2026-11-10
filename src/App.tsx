@@ -31,13 +31,13 @@ import {
 } from '@tabler/icons-react'
 import { blocks } from './entities/onboarding/content'
 import {
-  completesBlock,
-  completesProgram,
+  getCelebrationLevel,
   isAvailable,
   orderedPoints,
 } from './entities/onboarding/model'
 import { ModuleCompletionCelebration } from './widgets/module-completion/ModuleCompletionCelebration'
 import { ProgramCompletionModal } from './widgets/program-completion/ProgramCompletionModal'
+import { CelebrationArt } from './shared/ui/celebration/CelebrationArt'
 import { useProgress } from './app/progress'
 import styles from './App.module.css'
 const points = orderedPoints(blocks)
@@ -445,6 +445,7 @@ export function Lesson() {
   const [finished, setFinished] = useState(false)
   const [moduleFinished, setModuleFinished] = useState(false)
   const [programFinished, setProgramFinished] = useState(false)
+  const [topicCelebration, setTopicCelebration] = useState(false)
   useEffect(() => {
     if (point && available && saved?.status === 'not_started')
       update(point.id, { status: 'in_progress' })
@@ -486,9 +487,7 @@ export function Lesson() {
     return (
       <>
         <main className={styles.empty}>
-          <div className={styles.celebrate}>
-            <IconSparkles size={60} aria-hidden="true" />
-          </div>
+          {topicCelebration && <CelebrationArt level="topic" />}
           <span className={styles.eyebrow}>ЕЩЁ ОДИН ШАГ</span>
           <h1>Тема пройдена!</h1>
           <p>Ты всегда можешь вернуться к ней в справочнике.</p>
@@ -500,6 +499,7 @@ export function Lesson() {
               <Button
                 onClick={() => {
                   setFinished(false)
+                  setTopicCelebration(false)
                   void navigate({
                     to: '/lesson/' + next.id,
                     viewTransition: false,
@@ -662,26 +662,24 @@ export function Lesson() {
             radius="xl"
             size="md"
             onClick={() => {
-              const moduleComplete = completesBlock(progress, blocks, point.id)
-              const programComplete = completesProgram(
-                progress,
-                blocks,
-                point.id,
-              )
+              const level = getCelebrationLevel(progress, blocks, point.id)
               const finish = () => {
                 update(point.id, {
                   status: 'completed',
                   completedAt: saved.completedAt ?? new Date().toISOString(),
                 })
-                if (programComplete) {
+                if (level === 'onboarding') {
+                  setTopicCelebration(false)
                   setFinished(true)
                   setProgramFinished(true)
-                } else if (moduleComplete) setModuleFinished(true)
-                else setFinished(true)
+                } else if (level === 'block') setModuleFinished(true)
+                else {
+                  setTopicCelebration(level === 'topic')
+                  setFinished(true)
+                }
               }
               if (
-                moduleComplete &&
-                !programComplete &&
+                level === 'block' &&
                 document.startViewTransition &&
                 !window.matchMedia('(prefers-reduced-motion: reduce)').matches
               )

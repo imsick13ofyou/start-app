@@ -1,3 +1,5 @@
+import type { CelebrationLevel } from '../../shared/types/celebration'
+
 export type ProgressStatus = 'not_started' | 'in_progress' | 'completed'
 export interface OfficialSource {
   title: string
@@ -199,4 +201,20 @@ export function completesProgram(
         point.id === id || progress.points[point.id]?.status === 'completed',
     )
   )
+}
+
+/** Выбирает наивысший уровень награды только при первом завершении темы. */
+export function getCelebrationLevel(
+  progress: ProgressSnapshot,
+  blocks: OnboardingBlock[],
+  id: string,
+): CelebrationLevel | null {
+  if (
+    progress.points[id]?.status !== 'in_progress' ||
+    !isAvailable(id, progress, blocks)
+  )
+    return null
+  if (completesProgram(progress, blocks, id)) return 'onboarding'
+  if (completesBlock(progress, blocks, id)) return 'block'
+  return 'topic'
 }
