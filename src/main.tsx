@@ -1,10 +1,21 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { MantineProvider, createTheme } from '@mantine/core'
+import { createRootRoute, createRoute, createRouter, RouterProvider } from '@tanstack/react-router'
+import '@mantine/core/styles.css'
 import './index.css'
-import App from './App.tsx'
+import { Completion, Layout, Lesson, NotFound, Reference, Roadmap, Welcome } from './App'
+import { ProgressProvider } from './app/progress'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const rootRoute=createRootRoute({component:Layout,notFoundComponent:NotFound})
+const routeTree=rootRoute.addChildren([
+ createRoute({getParentRoute:()=>rootRoute,path:'/',component:Welcome}),
+ createRoute({getParentRoute:()=>rootRoute,path:'/roadmap',component:Roadmap}),
+ createRoute({getParentRoute:()=>rootRoute,path:'/lesson/$pointId',component:Lesson}),
+ createRoute({getParentRoute:()=>rootRoute,path:'/completion',component:Completion}),
+ createRoute({getParentRoute:()=>rootRoute,path:'/reference',component:Reference}),
+])
+const router=createRouter({routeTree,defaultPreload:'intent'})
+declare module '@tanstack/react-router' { interface Register { router: typeof router } }
+const theme=createTheme({primaryColor:'indigo',fontFamily:'Inter, Segoe UI, sans-serif',defaultRadius:'md'})
+createRoot(document.getElementById('root')!).render(<StrictMode><MantineProvider theme={theme}><ProgressProvider><RouterProvider router={router}/></ProgressProvider></MantineProvider></StrictMode>)

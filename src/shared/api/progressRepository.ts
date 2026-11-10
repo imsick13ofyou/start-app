@@ -1,4 +1,4 @@
-import { emptyProgress, type ProgressSnapshot } from '../../entities/onboarding/model'
+import { emptyProgress, type ProgressSnapshot } from '../../entities/onboarding/model.ts'
 
 export interface ProgressRepository { getProgress(): Promise<unknown>; saveProgress(progress: ProgressSnapshot): Promise<void>; resetProgress(): Promise<void> }
 const STORAGE_KEY = 'university-onboarding:progress:v1'
@@ -16,7 +16,7 @@ export class HttpProgressRepository implements ProgressRepository {
   /** Загрузка станет доступна после согласования API. */
   async getProgress(): Promise<unknown> { throw new Error('API прогресса не настроен') }
   /** Сохранение станет доступно после согласования API. */
-  async saveProgress(_progress: ProgressSnapshot): Promise<void> { throw new Error('API прогресса не настроен') }
+  async saveProgress(): Promise<void> { throw new Error('API прогресса не настроен') }
   /** Сброс станет доступен после согласования API. */
   async resetProgress(): Promise<void> { throw new Error('API прогресса не настроен') }
 }

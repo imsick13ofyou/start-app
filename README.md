@@ -1,78 +1,17 @@
-# React + TypeScript + Vite
+# Старт в вузе
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Учебный прототип путеводителя для первокурсников НИТУ МИСИС. Не является официальным сервисом университета.
 
-Currently, two official plugins are available:
+## Запуск
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+При установленных зависимостях выполните `npm run dev`. Проверки: `npm test`, `npm run lint`, `npm run build`. Для тестов используется встроенный тестовый модуль Node.js 24; сборка включает проверку типов TypeScript.
 
-## React Compiler
+## Устройство
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+`src/entities/onboarding` содержит типы, независимые от React функции прогресса и содержимое маршрута. `src/shared/api` содержит контракт и адаптеры хранения. `src/app/progress.tsx` загружает данные и предоставляет состояние интерфейсу; `src/App.tsx` содержит экраны, маршруты объявлены в `src/main.tsx`. Данные тем не сохраняются в прогрессе.
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+`LocalStorageProgressRepository` хранит версионированный снимок в `university-onboarding:progress:v1`. При загрузке снимок нормализуется относительно текущих тем, а статусы блоков пересчитываются по точкам. Неизвестная версия сбрасывается к начальному состоянию; для будущих версий необходимо добавить явные миграции в `normalizeProgress`. Удалённые идентификаторы игнорируются, новые получают начальное состояние. Ошибка доступа к хранилищу отображается в интерфейсе, а текущая сессия продолжает работать в памяти.
 
-## Expanding the ESLint configuration
+Для перехода на API реализуйте методы `HttpProgressRepository` согласно согласованному серверному контракту и переключите фабрику `createProgressRepository`. Компоненты и функции расчёта менять не потребуется. Сервер и его протокол в прототипе не реализованы.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
-
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+Ссылки на источники взяты из задания. Их доступность и содержание ещё необходимо проверить; дата проверки намеренно не проставлена. Условия и процедуры следует уточнять на официальном сайте университета.
