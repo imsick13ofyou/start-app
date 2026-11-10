@@ -287,6 +287,13 @@ export function Roadmap() {
                 className={styles.block}
               >
                 <div className={`${styles.blockHeader} ${styles[block.theme]}`}>
+                  <div className={styles.blockProgress} aria-hidden="true">
+                    <span
+                      style={{
+                        width: `${(completed / block.points.length) * 100}%`,
+                      }}
+                    />
+                  </div>
                   <div className={styles.blockIcon}>
                     <BlockIcon size={28} aria-hidden="true" />
                   </div>
@@ -307,13 +314,6 @@ export function Roadmap() {
                       `${completed}/3`
                     )}
                   </div>
-                </div>
-                <div className={styles.blockProgress} aria-hidden="true">
-                  <span
-                    style={{
-                      width: `${(completed / block.points.length) * 100}%`,
-                    }}
-                  />
                 </div>
                 <div className={styles.nodes}>
                   {block.points.map((point, i) => {

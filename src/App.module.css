@@ -340,6 +340,8 @@
   margin-bottom: 26px;
 }
 .blockHeader {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: 18px;
@@ -940,8 +942,11 @@
   scroll-margin-top: 24px;
 }
 .blockProgress {
-  height: 4px;
-  margin: 0 24px;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  right: 0;
+  height: 8px;
   background: var(--border);
   overflow: hidden;
   border-radius: 999px;
